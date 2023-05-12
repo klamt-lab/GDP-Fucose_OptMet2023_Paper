@@ -90,4 +90,4 @@ The optimization is set in the COPASI model file. The *calculation script a* set
 TODO: add validation data to this optimization once it's available
 
 ## Publication
-Huber, Orozco, Rexer, Reichl, Klamt (2023), *not yet submitted*
+Huber, Alcalá-Orozco, Rexer, Reichl, Klamt (2023), *not yet submitted*
