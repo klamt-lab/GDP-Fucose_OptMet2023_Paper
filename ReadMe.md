@@ -16,76 +16,76 @@ All python scripts make use of [basiCO](https://github.com/copasi/basico), a sim
 ### 1. Generation of an Ensemble of Kinetic Model Parameter Sets
 The global parameter estimation is set in the COPASI model file and includes all experimental data files in the directory (experiments 1-5). The *calculation script a* repeats the parameter estimation 100 times. The resulting 100 parameter sets are stored in a .csv file which is read by the *visualization script a* to generate the histogram multiplot figure. *Calculation script b* also reads the parameter estimation output and uses the model file set to baseline initial concentrations to create time course simulations for each parameter set. The time courses are then visualized together with data of the baseline experiment via *visualization script b*.
 
-| File Type                 | File Name                                                                   |
-|---------------------------|-----------------------------------------------------------------------------|
-| COPASI model file:        | GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps                                    |
-| Experimental data file 1: | 2022_11_08_FE13_for model fiting.txt                                        |
-| Experimental data file 2: | 2022_11_17_FE17_for_model_fiting_1FKP.txt                                   |
-| Experimental data file 3: | 2022_11_17_FE17_for_model_fiting_07FKP.txt                                  |
-| Experimental data file 4: | 2022_11_24_FE18_for_model_fiting_1FKP.txt                                   |
-| Experimental data file 5: | 2022_11_24_FE18_for_model_fiting_07FKP.txt                                  |
-| Calculation script a):    | rand_param_sampling.py                                                      |
-| Calculation script b):    | calc_time_courses_InitFE18_07FKP.py                                         |
-| Calculation output a):    | sampling_output_EvoStrat_100runs.csv                                        |
-| Calculation output b):    | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE18_07FKP.pkl      |
-| Visualization script a):  | visualize_params.py                                                         |
-| Visualization script b):  | visualize_time_courses_InitFE18_07FKP.py                                    |
-| Visualization output a):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Params_fig.[pdf/png/svg]             |
-| Visualization output b):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE18_07FKP_fig.[pdf/png/svg] |
+| File Type                 | File Name                                                                                                                                                           |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| COPASI model file:        | [GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps](parameter_ensemble/GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps)                                                             |
+| Experimental data file 1: | [2022_11_08_FE13_for model fiting.txt](parameter_ensemble/2022_11_08_FE13_for model fiting.txt)                                                                     |
+| Experimental data file 2: | [2022_11_17_FE17_for_model_fiting_1FKP.txt](parameter_ensemble/2022_11_17_FE17_for_model_fiting_1FKP.txt)                                                           |
+| Experimental data file 3: | [2022_11_17_FE17_for_model_fiting_07FKP.txt](parameter_ensemble/2022_11_17_FE17_for_model_fiting_07FKP.txt)                                                         |
+| Experimental data file 4: | [2022_11_24_FE18_for_model_fiting_1FKP.txt](parameter_ensemble/2022_11_24_FE18_for_model_fiting_1FKP.txt)                                                           |
+| Experimental data file 5: | [2022_11_24_FE18_for_model_fiting_07FKP.txt](parameter_ensemble/2022_11_24_FE18_for_model_fiting_07FKP.txt)                                                         |
+| Calculation script a):    | [rand_param_sampling.py](parameter_ensemble/rand_param_sampling.py)                                                                                                 |
+| Calculation script b):    | [calc_time_courses_InitFE18_07FKP.py](parameter_ensemble/calc_time_courses_InitFE18_07FKP.py)                                                                       |
+| Calculation output a):    | [sampling_output_EvoStrat_100runs.csv](parameter_ensemble/sampling_output_EvoStrat_100runs.csv)                                                                     |
+| Calculation output b):    | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE18_07FKP.pkl](parameter_ensemble/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE18_07FKP.pkl) |
+| Visualization script a):  | [visualize_params.py](parameter_ensemble/visualize_params.py)                                                                                                       |
+| Visualization script b):  | [visualize_time_courses_InitFE18_07FKP.py](parameter_ensemble/visualize_time_courses_InitFE18_07FKP.py)                                                             |
+| Visualization output a):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Params_fig](parameter_ensemble/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Params_fig.svg)                                       |
+| Visualization output b):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE18_07FKP_fig](parameter_ensemble/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE18_07FKP_fig.svg)               |
 
 ### 2. Model-based Optimization According to Objective O1 (Maximize Titer)
 The optimization is set in the COPASI model file. The *calculation script a* sets the model to the parameter sets of the ensemble and repeats the optimization for each set (100 optimization runs in total). The result is stored in a pickle file which is read by the *visualization script a* to create the box plot / scatterplot figure. *Calculation script b* reads the model file, the optimization output, and the parameter ensemble in order to perform the cross-validation and subsequent scoring. The result of the cross-validation is stored in a pickle file and read by *visualization script b* to produce the heatmap figure. *Calculation script c* compares the validation experiment to simulations of the model ensemble and the simulation result is stored in a pickle file which is read by *visualization script c* to create the validation time courses figure.
 
-| File Type                 | File Name                                                                       |
-|---------------------------|---------------------------------------------------------------------------------|
-| COPASI model file:        | GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps                                  |
-| Calculation script a):    | Opt7b_calc.py                                                                   |
-| Calculation script b):    | select_best_Opt7b_for_all_param_sets_calc.py                                    |
-| Calculation script c):    | calc_time_courses_InitFE20_Val1_Opt7b_O53.py                                    |
-| Calculation output a):    | GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_RandParamSampl_EvoStrat100x_list_res_stats.pkl  |
-| Calculation output b):    | GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_SlctBestOptAllParams_EvoStrat_100x_allTit.pkl   |
-| Calculation output c):    | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE20_Val1_Opt7b_O53.pkl |
-| Visualization script a):  | Opt7b_vis.py                                                                    |
-| Visualization script b):  | select_best_Opt7b_for_all_param_sets_vis.py                                     |
-| Visualization script c):  | visualize_time_courses_InitFE20_Val1_Opt7b_O53.py                               |
-| Visualization output a):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_BoxScatterPlot_fig.[pdf/png/svg]   |
-| Visualization output b):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_TiterHeatmap_fig.[pdf/png/svg]     |
-| Visualization output c):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val1_fig.[pdf/png/svg]      |
+| File Type                 | File Name                                                                                                                                                                          |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| COPASI model file:        | [GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps)                                                                   |
+| Calculation script a):    | [Opt7b_calc.py](optimization_O1/Opt7b_calc.py)                                                                                                                                     |
+| Calculation script b):    | [select_best_Opt7b_for_all_param_sets_calc.py](optimization_O1/select_best_Opt7b_for_all_param_sets_calc.py)                                                                       |
+| Calculation script c):    | [calc_time_courses_InitFE20_Val1_Opt7b_O53.py](optimization_O1/calc_time_courses_InitFE20_Val1_Opt7b_O53.py)                                                                       |
+| Calculation output a):    | [GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_RandParamSampl_EvoStrat100x_list_res_stats.pkl](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_RandParamSampl_EvoStrat100x_list_res_stats.pkl)   |
+| Calculation output b):    | [GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_SlctBestOptAllParams_EvoStrat_100x_allTit.pkl](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_SlctBestOptAllParams_EvoStrat_100x_allTit.pkl)     |
+| Calculation output c):    | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE20_Val1_Opt7b_O53.pkl](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSimResults_InitFE20_Val1_Opt7b_O53.pkl) |
+| Visualization script a):  | [Opt7b_vis.py](optimization_O1/Opt7b_vis.py)                                                                                                                                       |
+| Visualization script b):  | [select_best_Opt7b_for_all_param_sets_vis.py](optimization_O1/select_best_Opt7b_for_all_param_sets_vis.py)                                                                         |
+| Visualization script c):  | [visualize_time_courses_InitFE20_Val1_Opt7b_O53.py](optimization_O1/visualize_time_courses_InitFE20_Val1_Opt7b_O53.py)                                                             |
+| Visualization output a):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_BoxScatterPlot_fig](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_BoxScatterPlot_fig.svg)                             |
+| Visualization output b):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_TiterHeatmap_fig](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt7b_TiterHeatmap_fig.svg)                                 |
+| Visualization output c):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val1_fig](optimization_O1/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val1_fig.svg)                                   |
 
 ### 3. Model-based optimization according to objective O3 (Minimize Enzyme Load)
 The optimization is set in the COPASI model file. The *calculation script a* sets the model to the parameter sets of the ensemble and repeats the optimization for each set (100 optimization runs in total). The result is stored in a pickle file which is read by the *visualization script a* to create the box plot / scatterplot figure. *Calculation script b* reads the model file, the optimization output, and the parameter ensemble in order to perform the cross-validation and subsequent scoring. The result of the cross-validation is stored in two pickle files (b1 and b2) and both are read by *visualization script b* to produce the heatmap figure. *Calculation script c* compares the validation experiment to simulations of the model ensemble and the simulation result is stored in a pickle file which is read by *visualization script c* to create the validation time courses figure.
 
-| File Type                   | File Name                                                                       |
-|-----------------------------|---------------------------------------------------------------------------------|
-| COPASI model file:          | GDP-Fucose_v7XGSK_PE9XGSK_with_Opt8bMW_setup.cps                                |
-| Calculation script a):      | Opt8bMW_calc.py                                                                 |
-| Calculation script b):      | select_best_Opt8bMW_for_all_param_sets_calc.py                                  |
-| Calculation script c):      | calc_time_courses_InitFE20_Val2_Opt8bMW_O88.py                                  |
-| Calculation output a):      | GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_EvoStrat100x_res_stats.pkl                    |
-| Calculation output b1):     | GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allEtotMW.pkl   |
-| Calculation output b2):     | GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allTit.pkl      |
-| Calculation output c):      | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSRes_InitFE20_Val2_Opt8bMW_O88.pkl     |
-| Visualization script a):    | Opt8bMW_vis.py                                                                  |
-| Visualization script b):    | select_best_Opt8bMW_for_all_param_sets_vis.py                                   |
-| Visualization script c):    | visualize_time_courses_InitFE20_Val2_Opt8bMW_O88.py                             |
-| Visualization output a):    | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_BoxScatterPlot_fig.[pdf/png/svg] |
-| Visualization output b):    | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_EtotMWTiterHM_fig.[pdf/png/svg]  |
-| Visualization output c):    | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val2_fig.[pdf/png/svg]      |
+| File Type                   | File Name                                                                                                                                                                      |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| COPASI model file:          | [GDP-Fucose_v7XGSK_PE9XGSK_with_Opt8bMW_setup.cps](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_with_Opt8bMW_setup.cps)                                                           |
+| Calculation script a):      | [Opt8bMW_calc.py](optimization_O3/Opt8bMW_calc.py)                                                                                                                             |
+| Calculation script b):      | [select_best_Opt8bMW_for_all_param_sets_calc.py](optimization_O3/select_best_Opt8bMW_for_all_param_sets_calc.py)                                                               |
+| Calculation script c):      | [calc_time_courses_InitFE20_Val2_Opt8bMW_O88.py](optimization_O3/calc_time_courses_InitFE20_Val2_Opt8bMW_O88.py)                                                               |
+| Calculation output a):      | [GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_EvoStrat100x_res_stats.pkl](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_EvoStrat100x_res_stats.pkl)                                   |
+| Calculation output b1):     | [GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allEtotMW.pkl](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allEtotMW.pkl) |
+| Calculation output b2):     | [GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allTit.pkl](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allTit.pkl)       |
+| Calculation output c):      | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSRes_InitFE20_Val2_Opt8bMW_O88.pkl](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCSRes_InitFE20_Val2_Opt8bMW_O88.pkl)     |
+| Visualization script a):    | [Opt8bMW_vis.py](optimization_O3/Opt8bMW_vis.py)                                                                                                                               |
+| Visualization script b):    | [select_best_Opt8bMW_for_all_param_sets_vis.py](optimization_O3/select_best_Opt8bMW_for_all_param_sets_vis.py])                                                                |
+| Visualization script c):    | [visualize_time_courses_InitFE20_Val2_Opt8bMW_O88.py](optimization_O3/visualize_time_courses_InitFE20_Val2_Opt8bMW_O88.py)                                                     |
+| Visualization output a):    | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_BoxScatterPlot_fig](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_BoxScatterPlot_fig.svg)                     |
+| Visualization output b):    | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_EtotMWTiterHM_fig](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt8bMW_EtotMWTiterHM_fig.svg)                       |
+| Visualization output c):    | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val2_fig](optimization_O3/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_TCs_InitFE20_Val2_fig.svg)                               |
 
 ### 4. Model-based optimization according to objective O6 (Minimize Normalized Costs)
 The optimization is set in the COPASI model file. The *calculation script a* sets the model to the parameter sets of the ensemble and repeats the optimization for each set (100 optimization runs in total). The result is stored in a pickle file which is read by the *visualization script a* to create the box plot / scatterplot figure. *Calculation script b* reads the model file, the optimization output, and the parameter ensemble in order to perform the cross-validation and subsequent scoring. The result of the cross-validation is stored in a pickle file and read by *visualization script b* to produce the heatmap figure.
 
-| File Type                 | File Name                                                                         |
-|---------------------------|-----------------------------------------------------------------------------------|
-| COPASI model file:        | GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps                                    |
-| Calculation script a):    | Opt9d_calc.py                                                                     |
-| Calculation script b):    | select_best_Opt9d_for_all_param_sets_calc.py                                      |
-| Calculation output a):    | GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_RandParamSampl_EvoStrat100x_list_res_stats.pkl    |
-| Calculation output b):    | GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_SlctBestOptAllParams_EvoStrat_100x_allCPerP.pkl   |
-| Visualization script a):  | Opt9d_vis.py                                                                      |
-| Visualization script b):  | select_best_Opt9d_for_all_param_sets_vis.py                                       |
-| Visualization output a):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_BoxScatterPlot_fig.[pdf/png/svg]     |
-| Visualization output b):  | GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig.[pdf/png/svg] |
+| File Type                 | File Name                                                                                                                                                                          |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| COPASI model file:        | [GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps)                                                                   |
+| Calculation script a):    | [Opt9d_calc.py](optimization_O6/Opt9d_calc.py)                                                                                                                                     |
+| Calculation script b):    | [select_best_Opt9d_for_all_param_sets_calc.py](optimization_O6/select_best_Opt9d_for_all_param_sets_calc.py)                                                                       |
+| Calculation output a):    | [GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_RandParamSampl_EvoStrat100x_list_res_stats.pkl](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_RandParamSampl_EvoStrat100x_list_res_stats.pkl)   |
+| Calculation output b):    | [GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_SlctBestOptAllParams_EvoStrat_100x_allCPerP.pkl](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_SlctBestOptAllParams_EvoStrat_100x_allCPerP.pkl) |
+| Visualization script a):  | [Opt9d_vis.py](optimization_O6/Opt9d_vis.py)                                                                                                                                       |
+| Visualization script b):  | [select_best_Opt9d_for_all_param_sets_vis.py](optimization_O6/select_best_Opt9d_for_all_param_sets_vis.py)                                                                         |
+| Visualization output a):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_BoxScatterPlot_fig](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_BoxScatterPlot_fig.svg)                             |
+| Visualization output b):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig.svg)                     |
 
 TODO: add validation data to this optimization once it's available
 
