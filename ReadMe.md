@@ -19,7 +19,7 @@ The global parameter estimation is set in the COPASI model file and includes all
 | File Type                 | File Name                                                                                                                                                           |
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | COPASI model file:        | [GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps](parameter_ensemble/GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps)                                                             |
-| Experimental data file 1: | [2022_11_08_FE13_for model fiting.txt](parameter_ensemble/2022_11_08_FE13_for model fiting.txt)                                                                     |
+| Experimental data file 1: | [2022_11_08_FE13_for_model_fiting.txt](parameter_ensemble/2022_11_08_FE13_for_model_fiting.txt)                                                                     |
 | Experimental data file 2: | [2022_11_17_FE17_for_model_fiting_1FKP.txt](parameter_ensemble/2022_11_17_FE17_for_model_fiting_1FKP.txt)                                                           |
 | Experimental data file 3: | [2022_11_17_FE17_for_model_fiting_07FKP.txt](parameter_ensemble/2022_11_17_FE17_for_model_fiting_07FKP.txt)                                                         |
 | Experimental data file 4: | [2022_11_24_FE18_for_model_fiting_1FKP.txt](parameter_ensemble/2022_11_24_FE18_for_model_fiting_1FKP.txt)                                                           |
