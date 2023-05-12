@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Model-based optimization using the entire parameter ensemble.
-    
-    Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps
-    Method: Genetic Algorithm, default COPASI settings
+"""
+Model-based optimization using the entire parameter ensemble.
 
-    The optimization is set in the COPASI model file (.cps)
-    
-    Approach: Calculate the optimization result for each of the
-    estimated parameter sets from the random parameter sampling 
-    (100 times). Export the result as serialized pickle (.pkl) file.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps
+Method: Genetic Algorithm, default COPASI settings
+
+The optimization is set in the COPASI model file (.cps)
+
+Approach: Calculate the optimization result for each of the
+estimated parameter sets from the random parameter sampling 
+(100 times). Export the result as serialized pickle (.pkl) file.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import os
 from basico import *
@@ -44,7 +46,8 @@ model = load_model('GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps')
 # # Value: XX
 # #3     NO YIELD CONSTRAINT
 # #4	   X ≤ Values[GDP-Fucose at 24h] ≤ inf
-# #    -> global quantity 'GDP-Fucose at 24h', value: X <-> event: 'Save GDP-Fucose at 24h' with trigger: {Time} == 24, target: Values[GDP-Fucose at 24h], expression: #{[GDP_Fucose]}
+# #    -> global quantity 'GDP-Fucose at 24h', value: X <-> event: 'Save GDP-Fucose at 24h'
+#         with trigger: {Time} == 24, target: Values[GDP-Fucose at 24h], expression: #{[GDP_Fucose]}
 # 5	   0 ≤ [ADP] ≤ inf
 # 6	   0 ≤ [ATP] ≤ inf
 # 7	   0 ≤ [Fuc1P] ≤ inf
@@ -102,7 +105,8 @@ set_opt_settings(settings={
 }})
 
 # OPTIMIZATION LOOP
-# setup for repeated optimizations with all different estimated parameter sets from random parameter sampling result
+# setup for repeated optimizations with all different estimated parameter sets
+# from random parameter sampling result
 opt_results = list()
 # loop over result data frame (every row = one parameter set)
 for index, param_set in tqdm(fits_data.iterrows()):

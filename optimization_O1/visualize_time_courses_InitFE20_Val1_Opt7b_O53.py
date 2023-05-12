@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Visualization of the time courses that were simulated with the model based on the estimated parameters ensemble.
+"""
+Visualization of the time courses that were simulated with the model set to the parameters ensemble 
+and the initial concentrations of the validation experiment.
 
-    1. Load random parameter sampling result
-    2. Import simulation results for each parameter set.
-    3. Second loop: create subplots for each model species that contain all different trajectories (100 fits -> 100 curves in each plot)
-    
+1. Import simulation results for each parameter set.
+2. Create subplots for each model species that contain all different trajectories (100 fits -> 100 curves in each plot)
 """
 
 from basico import *

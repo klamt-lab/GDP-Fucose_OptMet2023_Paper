@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Visualize cross-validation of optimization results with all parameter sets of the ensemble as heatmap.
-    
-    Approach: Import a pickled object that contains the simulation results of all 
-    possible combinations of i parameter sets p and j optimization results O (i x j 
-    matrix = rows: parameter sets, columns: optimization results). Then, visualize 
-    simulation results as heatmap.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Visualize cross-validation of optimization results with all parameter sets of
+the ensemble as heatmap.
+
+Approach: Import a pickled object that contains the simulation results of all 
+possible combinations of i parameter sets p and j optimization results O (i x j 
+matrix = rows: parameter sets, columns: optimization results). Then, visualize 
+simulation results as heatmap.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>"""
 
 import sys
 if '../..' not in sys.path:
@@ -62,7 +64,8 @@ sns.set(font_scale=1.2)
 # adjst whitespace around subplots
 fig.subplots_adjust(bottom=-0.05, top=0.9, wspace=0, hspace=-0.65)
 #bottom=0.01, top=0.9, wspace=0, hspace=-0.2
-# 1) E_TOT_MW HEATMAP: the enzyme load (E_tot_MW) is the same across all parameter sets, therefore we only need the first row of the df_E_tot_MW matrix
+# 1) E_TOT_MW HEATMAP: the enzyme load (E_tot_MW) is the same across all parameter sets,
+# therefore we only need the first row of the df_E_tot_MW matrix
 # set color map (reverse default color scheme: higher values => darker color)
 cmap = sns.cm.rocket_r
 # specify color bar options

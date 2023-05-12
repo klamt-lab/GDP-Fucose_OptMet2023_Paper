@@ -1,18 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Select the best optimization result (prediction) by
-    calculating the objective value (here: enzyme load 
-    = sum of all initial enzyme conc.) for all combinations of 
-    all parameter sets p with all optimization results O.
-        
-    Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps
-    
-    Approach: Load the list of parameter sets and load the list of optimization results (= sets of optimal initial enzyme concentrations). Both lists are of equal size (usually 100). Then, build a two level loop to iterate over all possible combinations of i parameter sets p and j optimization results O. Set the respective parameters and initial enzyme concentrations in the model and run a simulation. Store the results in a i x j matrix (rows: parameter sets, columns: optimization results). Then, calculate different measures (median, minimum, sum) for each column (= each optimization result) and combine them to calculate a score for each column. The optimization result with the highest score 
-    is selected for experimental testing.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Select the best optimization result (prediction) by
+calculating the objective value (here: enzyme load 
+= sum of all initial enzyme conc.) for all combinations of 
+all parameter sets p with all optimization results O.
+
+Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps
+
+Approach: Load the list of parameter sets and load the list of optimization results
+(= sets of optimal initial enzyme concentrations). Both lists are of equal size
+(usually 100). Then, build a two level loop to iterate over all possible combinations of
+i parameter sets p and j optimization results O. Set the respective parameters and initial
+enzyme concentrations in the model and run a simulation. Store the results in a
+i x j matrix (rows: parameter sets, columns: optimization results). Then, calculate different
+measures (median, minimum, sum) for each column (= each optimization result) and combine them
+to calculate a score for each column. The optimization result with the highest score is selected
+for experimental testing.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>"""
 
 import os
 from basico import *
@@ -22,7 +30,8 @@ import pickle
 import seaborn as sns
 
 # INITIALIZATION
-# load model (the model will only be used for time course simulations in this script, no further parameter estimations or other optimizations)
+# load model (the model will only be used for time course simulations in this script,
+# no further parameter estimations or other optimizations)
 path = os.getcwd()
 parent_dir_path = os.path.abspath(os.path.join(path, os.pardir))
 model_path = parent_dir_path + '\\' + 'parameter_ensemble' + '\\' + 'GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps'
@@ -72,16 +81,20 @@ for index, param_set in tqdm(param_sets.iterrows()):
         set_species('E_PPK3', initial_concentration=curr_opt_set_conc[3])
         # 3) simulate the model
         sim_result = run_time_course()
-        # calculate the objective value (here: gram enzyme load = sum of all initial enzyme concentrations in g/l; E_tot_MW is constant across all time points)
+        # calculate the objective value (here: gram enzyme load = sum of all initial
+        # enzyme concentrations in g/l; E_tot_MW is constant across all time points)
         sim_vals_timepoint_24h = sim_result.iloc[-1]
         E_tot_MW_24h = sim_vals_timepoint_24h['Values[E_tot_MW]']
         # titer at 24h is part of a constraint in this case so it is also stored
         titer_24h = sim_vals_timepoint_24h['GDP_Fucose']
-        # append the gram enzyme load to the row of gram enzyme loads (= contains gram enzyme loads for all different optimization results and one parameter set)
+        # append the gram enzyme load to the row of gram enzyme loads (= contains
+        # gram enzyme loads for all different optimization results and one parameter set)
         E_tot_MW_row.append(E_tot_MW_24h)
-        # append the titer to the row of titers (= contains titers for all different optimization results and one parameter set)
+        # append the titer to the row of titers (= contains titers for all different
+        # optimization results and one parameter set)
         titer_row.append(titer_24h)
-    # append row of gram enzyme loads and titers for all different optimization results and one parameter set to overall result list
+    # append row of gram enzyme loads and titers for all different optimization results
+    # and one parameter set to overall result list
     all_E_tot_MW.append(E_tot_MW_row)
     all_titers.append(titer_row)
 
@@ -125,14 +138,18 @@ df_titers = pd.DataFrame(all_titers)
 df_titers.columns = ['O{}'.format(i+1) for i in df_titers.columns]
 # row names: parameter sets p1 ... pj
 df_titers.index = ['p{}'.format(i+1) for i in df_titers.index]
-# calculate statistics (count, mean, std, min, 25%, 50%=median, 75%, max) for each column of the p x O matrix (rows: parameter sets p; columns: optimization result sets O)
+# calculate statistics (count, mean, std, min, 25%, 50%=median, 75%, max) for
+# each column of the p x O matrix (rows: parameter sets p; columns: optimization result sets O)
 df_E_tot_MW_col_stats = df_E_tot_MW.describe()
 df_titers_col_stats = df_titers.describe()
 # calculate sum for each column
 df_E_tot_MW_col_sums= df_E_tot_MW.sum(axis=0)
 df_titers_col_sums= df_titers.sum(axis=0)
 # combine different statistical measures to obtain final ranking
-# idea: weight1*(overall_enzyme_load_min/col_enyzme_load_value) + weight2*(titers_col_min-15) with weight1 = 10 and weight2 = 1 so that scores become positive (based on known value ranges) and also to emphasize the importance of getting a good (= low) gram enzyme load; 15 because constraint in optimization problem was titer at 24h >= 15 mM
+# idea: weight1*(overall_enzyme_load_min/col_enyzme_load_value) + weight2*(titers_col_min-15) with
+# weight1 = 10 and weight2 = 1 so that scores become positive (based on known value ranges) and
+# also to emphasize the importance of getting a good (= low) gram enzyme load; 15
+# because constraint in optimization problem was titer at 24h >= 15 mM
 df_E_tot_MW_col_stats_min_min  = min(df_E_tot_MW_col_stats.loc['min'])   # lowest min gram enzyme load
 # calculate score for each column (= each optimization result)
 scoring_results = []

@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Model-based optimization using the entire parameter ensemble.
-    
-    Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps
-    Method: Genetic Algorithm, default COPASI settings
+"""
+Model-based optimization using the entire parameter ensemble.
 
-    The optimization is set in the COPASI model file (.cps)
-    
-    Approach: Calculate the optimization result for each of the
-    estimated parameter sets from the random parameter sampling 
-    (100 times). Export the result as serialized pickle (.pkl) file.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps
+Method: Genetic Algorithm, default COPASI settings
+
+The optimization is set in the COPASI model file (.cps)
+
+Approach: Calculate the optimization result for each of the
+estimated parameter sets from the random parameter sampling 
+(100 times). Export the result as serialized pickle (.pkl) file.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import os
 from basico import *
@@ -32,7 +34,8 @@ model = load_model('GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps')
 # 4    0.00018 ≤ [E_PPK3]_0 ≤ 0.0129; Start Value = 0.002878526
 # constraints:
 # 1    0 ≤ Values[E_tot] ≤ 0.04693
-#     -> global quantity 'E_tot': assignment: {[E_FKP]_0}+{[E_GMPK]_0}+{[E_PPA]_0}+{[E_PPK3]_0}; Initial Value: 0.046928797
+#     -> global quantity 'E_tot': assignment: {[E_FKP]_0}+{[E_GMPK]_0}+{[E_PPA]_0}+{[E_PPK3]_0}; 
+#                                 Initial Value: 0.046928797
 # 2    0 ≤ [ADP] ≤ inf
 # 3    0 ≤ [ATP] ≤ inf
 # 4    0 ≤ [Fuc1P] ≤ inf
@@ -78,7 +81,8 @@ set_opt_settings(settings={
 }})
 
 # OPTIMIZATION LOOP
-# setup for repeated optimizations with all different estimated parameter sets from random parameter sampling result
+# setup for repeated optimizations with all different estimated parameter sets
+# from random parameter sampling result
 opt_results = list()
 # loop over result data frame (every row = one parameter set)
 for index, param_set in tqdm(fits_data.iterrows()):

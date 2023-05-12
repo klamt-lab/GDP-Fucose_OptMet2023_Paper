@@ -1,22 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Generation of an ensemble of kinetic model parameters via repeated global parameter estimation.
-    
-    Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps 
-    Experimental Data: 2022_11_08_FE13_for model fiting.txt, 2022_11_17_FE17_for_model_fiting_1FKP.txt, 2022_11_17_FE17_for_model_fiting_07FKP.txt, 2022_11_24_FE18_for_model_fiting_1FKP.txt, 2022_11_24_FE18_for_model_fiting_07FKP.txt
-    Method: Evolutionary Strategy (SRES), default COPASI settings
+"""
+Generation of an ensemble of kinetic model parameters via 
+repeated global parameter estimation.
 
-    The parameter estimation is set in the
-    COPASI model file (.cps).
-    
-    Approach: Repeat the parameter estimation 100
-    times, each time with the same initial parameter 
-    values using a global algorithm. Save the estimated 
-    parameters and the objective values of the fits.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps 
+Experimental Data:
+2022_11_08_FE13_for model fiting.txt,
+2022_11_17_FE17_for_model_fiting_1FKP.txt,
+2022_11_17_FE17_for_model_fiting_07FKP.txt,
+2022_11_24_FE18_for_model_fiting_1FKP.txt,
+2022_11_24_FE18_for_model_fiting_07FKP.txt
+Method: Evolutionary Strategy (SRES), default COPASI settings
+
+The parameter estimation is set in the
+COPASI model file (.cps).
+
+Approach: Repeat the parameter estimation 100
+times, each time with the same initial parameter 
+values using a global algorithm. Save the estimated 
+parameters and the objective values of the fits.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import sys
 if '../..' not in sys.path:
@@ -79,13 +87,19 @@ reaction_params = get_reaction_parameters()
 fit_params = get_fit_parameters()
 # get experimental data (creates: list)
 exp_data = get_experiment_data_from_model()
-# run parameter estimation task with 'Current Solution Statistics' once to get the correct mapping of exp data to the model species (this will not fit anything, it will just show the current solution and it will make the correct mapping possible!)
+# run parameter estimation task with 'Current Solution Statistics' once to 
+# get the correct mapping of exp data to the model species
+# (this will not fit anything, it will just show the current solution and it 
+# will make the correct mapping possible!)
 run_parameter_estimation(method='Current Solution Statistics', update_model=False)
 # get mapping of experimental data (creates: pandas.core.frame.DataFrame)
 # (sufficient to get it from FE13 since the mapping is the same for all exp. data sets)
 mapping = get_experiment_mapping('FE13')
-# create an empty pandas data frame to store the results of repeated parameter estimations (obj value and all estimated parameters)
-# .index.values returns the row names of the pandas dataframe as a numpy.ndarray; the list() function converts the ndarray to a list (containing the row names as strings); add a column for the objective value of the fit as last column
+# create an empty pandas data frame to store the results of repeated parameter estimations
+# (obj value and all estimated parameters)
+# .index.values returns the row names of the pandas dataframe as a numpy.ndarray;
+# the list() function converts the ndarray to a list (containing the row names as strings);
+# add a column for the objective value of the fit as last column
 column_names = list(reaction_params.index.values) + ['obj_val']
 fit_results = pd.DataFrame(columns=column_names)
 
@@ -96,14 +110,19 @@ for i in trange(100):
     # get solution of the parameter estimation run (creates: pandas.core.frame.DataFrame)
     fit_sol = get_parameters_solution()
     # sol.iloc[0,0] -> '1e-1' = str type lower boundary entry
-    # => sol.iloc[:,2] returns all estimated parameter values (third column = sol) as pandas.core.series.Series
+    # => sol.iloc[:,2] returns all estimated parameter values
+    # (third column = sol) as pandas.core.series.Series
     fit_estim_params = fit_sol.iloc[:,2]
-    # get objective value of the last fit ( = measurement for quality of the fit) and create a series with that value and the name 'obj_val'
+    # get objective value of the last fit ( = measurement for quality of the fit) and
+    # create a series with that value and the name 'obj_val'
     fit_stats = get_fit_statistic()
     fit_stats_objval = pd.Series(fit_stats['obj'], index=['obj_val'])
-    # append the series which contains the objective value to the series of fitted parameter values (at the end)
+    # append the series which contains the objective value to the series of fitted 
+    # parameter values (at the end)
     fit_estim_params = fit_estim_params.append(fit_stats_objval)
-    # append the updated series to the result dataframe by first converting it to a data frame with .to_frame() and by transposing the resulting data frame with .T (to get one long row instead of one column with many rows)
+    # append the updated series to the result dataframe by first converting it to
+    # a data frame with .to_frame() and by transposing the resulting data frame with
+    # .T (to get one long row instead of one column with many rows)
     fit_results = pd.concat([fit_results, fit_estim_params.to_frame().T])
 
 # OUTPUT

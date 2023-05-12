@@ -1,27 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Visualize the model-based optimization using the entire parameter ensemble.
-    
-    Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps
-    Method: Genetic Algorithm, default COPASI settings
-    
-    The optimization is set in the COPASI model file (.cps)
-    
-    Approach: Import the optimization result for each of the
-    estimated parameter sets from the random parameter sampling 
-    (100 times). Plot the optimization results (= predicted initial 
-    enzyme concentrations) as combination of box and strip plot.
-    
-    "A box plot (or box-and-whisker plot) shows the distribution of quantitative data in a 
-    way that facilitates comparisons between variables or across levels of a categorical 
-    variable. The box shows the quartiles of the dataset while the whiskers extend to show 
-    the rest of the distribution, except for points that are determined to be “outliers” 
-    using a method that is a function of the inter-quartile range."
-    <https://seaborn.pydata.org/generated/seaborn.boxplot.html>
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Visualize the model-based optimization using the entire parameter ensemble.
+
+Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt7b_setup.cps
+Method: Genetic Algorithm, default COPASI settings
+
+The optimization is set in the COPASI model file (.cps)
+
+Approach: Import the optimization result for each of the
+estimated parameter sets from the random parameter sampling 
+(100 times). Plot the optimization results (= predicted initial 
+enzyme concentrations) as combination of box and strip plot.
+
+"A box plot (or box-and-whisker plot) shows the distribution of quantitative data in a 
+way that facilitates comparisons between variables or across levels of a categorical 
+variable. The box shows the quartiles of the dataset while the whiskers extend to show 
+the rest of the distribution, except for points that are determined to be “outliers” 
+using a method that is a function of the inter-quartile range."
+<https://seaborn.pydata.org/generated/seaborn.boxplot.html>
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import sys
 if '../..' not in sys.path:
@@ -68,7 +70,9 @@ plot_df = plot_data.reset_index()
 plot_df.rename(columns = {'name': ' ', 'sol': 'Initial Concentration [mM] \n'}, inplace = True)
 
 # PLOTTING
-# visualize the optimization result with a box plot+ strip plot: recommended initial enzyme concentration values are used to create box plots + are drawn as scattered dots per enzyme category
+# visualize the optimization result with a box plot+ strip plot:
+# recommended initial enzyme concentration values are used to
+# create box plots + are drawn as scattered dots per enzyme category
 # define axes label text
 xaxislabel = plot_df.columns[0]
 yaxislabel = plot_df.columns[1]
@@ -85,7 +89,8 @@ for patch in ax.artists:
     patch.set_facecolor((r, g, b, .3))
 # 2) create seaborn strip plot
 sns.stripplot(x=xaxislabel, y=yaxislabel, data=plot_df, s=3)
-# 3) create seaborn scatter plot (to add markers (red horizontal lines) for start values (pre-optimization) of initial enzyme concentations)
+# 3) create seaborn scatter plot (to add markers (red horizontal lines)
+# for start values (pre-optimization) of initial enzyme concentations)
 pre_opt_concs = [['E_FKP', 0.006625024], 
                  ['E_GMPK', 0.006358087], 
                  ['E_PPA', 0.03106716], 

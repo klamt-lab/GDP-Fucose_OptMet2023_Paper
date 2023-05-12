@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Visualize cross-validation of optimization results with all parameter sets of the ensemble as heatmap.
-    
-    Approach: Import a pickled object that contains the simulation results of all 
-    possible combinations of i parameter sets p and j optimization results O (i x j 
-    matrix = rows: parameter sets, columns: optimization results). Then, visualize 
-    simulation results as heatmap.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Visualize cross-validation of optimization results with all parameter sets of the ensemble as heatmap.
+
+Approach: Import a pickled object that contains the simulation results of all 
+possible combinations of i parameter sets p and j optimization results O (i x j 
+matrix = rows: parameter sets, columns: optimization results). Then, visualize 
+simulation results as heatmap.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import sys
 if '../..' not in sys.path:

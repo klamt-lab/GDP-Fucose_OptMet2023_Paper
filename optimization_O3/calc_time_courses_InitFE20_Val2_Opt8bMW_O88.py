@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Simulate model with entire parameter ensemble set to initial concentrations of the validation experiment.
+"""
+Simulate model with entire parameter ensemble set to the initial
+concentrations of the validation experiment.
 
-    1. Load random parameter sampling result
-    2. First loop: go through each set of estimated parameters, set the model parameters to these values, simulate the model, and store the results as data frames in a list (100 fits -> 100 model simulations)
-    3. Second loop: create subplots for each model species that contain all different trajectories (100 fits -> 100 curves in each plot)
-    
+1. Load random parameter sampling result
+2. Go through each set of estimated parameters, set the model
+   parameters to these values, simulate the model,
+   and store the results as data frames in a list
+   (100 fits -> 100 model simulations)
 """
 
 import os
@@ -30,11 +33,13 @@ fits_data.rename({'Unnamed: 0' : 'Name'}, axis=1, inplace=True)
 # index parameter sets (set IDS in first column 'Unnamed: 0' of result data frame)
 for i in range(len(fits_data)):
     fits_data.at[i, 'Name'] = i
-# load model (the model will only be used for time course simulations in this script, no further parameter estimations or other optimizations)
+# load model (the model will only be used for time course simulations in this script,
+# no further parameter estimations or other optimizations)
 model_path = parent_dir_path + '\\' + 'parameter_ensemble' + '\\' + 'GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps'
 model = load_model(model_path)
 # set initial concentrations of Alberto FE20_Validation2 experiment [mM]
-# (initial enzyme concentrations from opt. result 'O88'.EvoStrat100x as listed in 'select_best_Opt8bMW_for_all_param_sets.py'; initial substrate concentrations from FE20_Validation2 experiment)
+# (initial enzyme concentrations from opt. result 'O88'.EvoStrat100x as listed in
+# 'select_best_Opt8bMW_for_all_param_sets.py'; initial substrate concentrations from FE20_Validation2 experiment)
 set_species('Fuc', initial_concentration=22)            # set to measured GMP_0
 set_species('ATP', initial_concentration=5)             # measrued at t=0
 set_species('GMP', initial_concentration=22)            # measured at t=0
@@ -43,7 +48,8 @@ set_species('E_PPA', initial_concentration=0.007279)
 set_species('E_PPK3', initial_concentration=0.001040)
 set_species('E_GMPK', initial_concentration=0.002413)
 # FE20_Validation2 is not part of the model file. Therefore, we need to get it from an external text file
-# (changes to file: change 'GDP-Fucose' to 'GDP_Fucose', add square brackets around sepcies names in header, remove AMP measurements)
+# (changes to file: change 'GDP-Fucose' to 'GDP_Fucose', add square brackets around sepcies names
+# in header, remove AMP measurements)
 selected_exp_data = pd.read_table('2023_02_01_FE20_Validation2_withInitConcColumns.txt', sep='\t', header=0)
 # load standard deriatives
 selected_exp_data_SD = pd.read_table('2023_02_01_FE20_Validation2_SD.txt', sep='\t', header=0)

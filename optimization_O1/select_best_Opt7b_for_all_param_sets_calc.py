@@ -1,18 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Select the best optimization result (prediction) by
-    calculating the objective value (here: titer = conc.
-    of GDP-Fucose at 24h) for all combinations of 
-    all parameter sets p with all optimization results O.
-        
-    Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps
-    
-    Approach: Load the list of parameter sets and load the list of optimization results (= sets of optimal initial enzyme concentrations). Both lists are of equal size (usually 100). Then, build a two level loop to iterate over all possible combinations of i parameter sets p and j optimization results O. Set the respective parameters and initial enzyme concentrations in the model and run a simulation. Store the results in a i x j matrix (rows: parameter sets, columns: optimization results). Then, calculate different measures (median, minimum, sum) for each column (= each optimization result) and combine them to calculate a score for each column. The optimization result with the highest score 
-    is selected for experimental testing.
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Select the best optimization result (prediction) by
+calculating the objective value (here: titer = conc.
+of GDP-Fucose at 24h) for all combinations of 
+all parameter sets p with all optimization results O.
+
+Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps
+
+Approach: Load the list of parameter sets and load the list
+of optimization results (= sets of optimal initial enzyme concentrations).
+Both lists are of equal size (usually 100). Then, build a two level loop
+to iterate over all possible combinations of i parameter sets p and
+j optimization results O. Set the respective parameters and initial enzyme
+concentrations in the model and run a simulation. Store the results in
+a i x j matrix (rows: parameter sets, columns: optimization results). Then,
+calculate different measures (median, minimum, sum) for each column
+(= each optimization result) and combine them to calculate a score
+for each column. The optimization result with the highest score is selected
+for experimental testing.
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>"""
 
 import os
 from basico import *
@@ -22,7 +32,8 @@ import pickle
 import seaborn as sns
 
 # INITIALIZATION
-# load model (the model will only be used for time course simulations in this script, no further parameter estimations or other optimizations)
+# load model (the model will only be used for time course simulations in this script,
+# no further parameter estimations or other optimizations)
 path = os.getcwd()
 parent_dir_path = os.path.abspath(os.path.join(path, os.pardir))
 model_path = parent_dir_path + '\\' + 'parameter_ensemble' + '\\' + 'GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps'
@@ -74,7 +85,8 @@ for index, param_set in tqdm(param_sets.iterrows()):
         # 24h is the last time point of the time course simulation
         sim_concs_timepoint_24h = sim_result.iloc[-1]
         titer_24h = sim_concs_timepoint_24h['GDP_Fucose']
-        # append the titer to the row of titers (= contains titers for all different optimization results and one parameter set)
+        # append the titer to the row of titers (= contains titers for all different
+        # optimization results and one parameter set)
         titers_row.append(titer_24h)
     # append row of titers for all different optimization results and one parameter set to overall result list
     all_titers.append(titers_row)
@@ -103,7 +115,8 @@ df = pd.DataFrame(all_titers)
 df.columns = ['O{}'.format(i+1) for i in df.columns]
 # row names: parameter sets p1 ... pj
 df.index = ['p{}'.format(i+1) for i in df.index]
-# calculate statistics (count, mean, std, min, 25%, 50%=median, 75%, max) for each column of the p x O matrix (rows: parameter sets p; columns: optimization result sets O)
+# calculate statistics (count, mean, std, min, 25%, 50%=median, 75%, max)
+# for each column of the p x O matrix (rows: parameter sets p; columns: optimization result sets O)
 df_col_stats = df.describe()
 # calculate sum for each column
 df_col_sums= df.sum(axis=0)
@@ -116,7 +129,9 @@ df_max_col_min_idx = df_col_stats_mins.idxmax()
 # select column with highest sum
 df_max_col_sum_idx = df_col_sums.idxmax()
 # combine different statistical measures to obtain final ranking
-# idea: for each column calculate 'col_median/overall_max_median + col_min/overall_max_min + col_sum/overall_max_sum = score'; max score = 3
+# idea: for each column calculate
+# 'col_median/overall_max_median + col_min/overall_max_min + col_sum/overall_max_sum = score';
+# max score = 3
 df_col_stats_max_median = max(df_col_stats.loc['50%'])     # highest median over all columns
 df_col_stats_max_min    = max(df_col_stats.loc['min'])     # highest min over all columns
 df_col_sums_max_sum     = max(df_col_sums)                 # highest sum over all columns

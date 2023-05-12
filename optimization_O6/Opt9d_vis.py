@@ -1,27 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Visualize the model-based optimization using the entire parameter ensemble.
-    
-    Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps
-    Method: Genetic Algorithm, default COPASI settings
-    
-    The optimization is set in the COPASI model file (.cps)
-    
-    Approach: Import the optimization result for each of the
-    estimated parameter sets from the random parameter sampling 
-    (100 times). Plot the optimization results (= predicted initial 
-    enzyme concentrations) as combination of box and strip plot.
-    
-    "A box plot (or box-and-whisker plot) shows the distribution of quantitative data in a 
-    way that facilitates comparisons between variables or across levels of a categorical 
-    variable. The box shows the quartiles of the dataset while the whiskers extend to show 
-    the rest of the distribution, except for points that are determined to be “outliers” 
-    using a method that is a function of the inter-quartile range."
-    <https://seaborn.pydata.org/generated/seaborn.boxplot.html>
-    
-    Package: basiCO - simplified Copasi Python API
-             <https://github.com/copasi/basico>"""
+"""
+Visualize the model-based optimization using the entire parameter ensemble.
+
+Model: GDP-Fucose_v7XGSK_PE9XGSK_with_Opt9d_setup.cps
+Method: Genetic Algorithm, default COPASI settings
+
+The optimization is set in the COPASI model file (.cps)
+
+Approach: Import the optimization result for each of the
+estimated parameter sets from the random parameter sampling 
+(100 times). Plot the optimization results (= predicted initial 
+enzyme concentrations) as combination of box and strip plot.
+
+"A box plot (or box-and-whisker plot) shows the distribution of quantitative data in a 
+way that facilitates comparisons between variables or across levels of a categorical 
+variable. The box shows the quartiles of the dataset while the whiskers extend to show 
+the rest of the distribution, except for points that are determined to be “outliers” 
+using a method that is a function of the inter-quartile range."
+<https://seaborn.pydata.org/generated/seaborn.boxplot.html>
+
+Package: basiCO - simplified Copasi Python API
+         <https://github.com/copasi/basico>
+"""
 
 import sys
 if '../..' not in sys.path:
@@ -73,7 +75,7 @@ plot_df_substrates = plot_df[(plot_df == 'ATP').any(axis=1) |
                              (plot_df == 'Fuc').any(axis=1) |
                              (plot_df == 'GMP').any(axis=1)]
 plot_dfs = [plot_df_enzymes, plot_df_substrates]
-# create data frames with start concentrations before optimization (pre_opt_concs) and the optimization result that I found manually via the Copasi GUI and stored in optimization_infos.txt (selected_opt_concs)
+# create data frames with start concentrations before optimization (pre_opt_concs)
 pre_opt_concs_E = [['E_FKP', 0.006625024],
                    ['E_GMPK', 0.006358087],
                    ['E_PPA', 0.03106716],
@@ -85,7 +87,9 @@ pre_opt_dfs = [pd.DataFrame(pre_opt_concs_E, columns=['name', 'conc']),
                pd.DataFrame(pre_opt_concs_S, columns=['name', 'conc'])]
 
 # PLOTTING
-# visualize the optimization result with a box plot+ strip plot: recommended initial enzyme concentration values are used to create box plots + are drawn as scattered dots per enzyme category
+# visualize the optimization result with a box plot+ strip plot: recommended
+# initial enzyme concentration values are used to create box plots + are drawn
+# as scattered dots per enzyme category
 # define figure style and set scaling of all font sizes
 sns.set(style='white', font_scale=1.25, rc={'axes.grid': True})
 # define multiplot (composite of the following individual graphs); width=12, height=6
@@ -102,7 +106,8 @@ for i in range(2):
     # 2) create seaborn strip plot
     sns.stripplot(x='name', y='sol', data=plot_dfs[i], ax=ax[i], 
                   s=3)
-    # 3) create seaborn scatter plot (to add markers (red horizontal lines) for start values (pre-optimization) of initial concentations)
+    # 3) create seaborn scatter plot (to add markers (red horizontal lines) for
+    # start values (pre-optimization) of initial concentations)
     sns.scatterplot(x='name', y='conc', data=pre_opt_dfs[i], ax=ax[i],
                     color='r', s=1000, marker='_')
     # set y-axis limits
