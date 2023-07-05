@@ -91,7 +91,5 @@ The optimization is set in the COPASI model file. The *calculation script a* set
 | Visualization output a):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_BoxScatterPlot_fig](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_BoxScatterPlot_fig.svg)                             |
 | Visualization output b):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig.svg)                     |
 
-TODO: add validation data to this optimization once it's available
-
 ## Publication
-Huber, Alcalá-Orozco, Rexer, Reichl, Klamt (2023), *not yet submitted*
+Huber, Alcalá-Orozco, Rexer, Reichl, Klamt (2023), *submitted*
