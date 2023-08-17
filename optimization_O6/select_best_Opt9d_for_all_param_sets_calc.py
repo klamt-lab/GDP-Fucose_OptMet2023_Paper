@@ -89,7 +89,7 @@ for index, param_set in tqdm(param_sets.iterrows()):
     # append row of titers for all different optimization results and one parameter set to overall result list
     all_CostPerProd.append(CostsPerProd_row)
 
-# OUTPUT
+# CROSS-VALIDATION OUTPUT
 # export all_CostPerProd as python object
 file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_SlctBestOptAllParams_EvoStrat_100x_allCPerP.pkl"
 open_file = open('EvoStrat100x_output' + '\\' + file_name, "wb")
@@ -119,10 +119,10 @@ df.index = ['p{}'.format(i+1) for i in df.index]
 df_col_stats = df.describe()
 # calculate sum for each column
 df_col_sums= df.sum(axis=0)
-# select colum with the lowest median
+# select column with the lowest median
 df_col_stats_medians = df_col_stats.loc['50%']
 df_min_col_median_idx = df_col_stats_medians.idxmin()
-# select colum with the lowest minimum
+# select column with the lowest minimum
 df_col_stats_mins = df_col_stats.loc['min']
 df_min_col_min_idx = df_col_stats_mins.idxmin()
 # select column with lowest sum
@@ -160,3 +160,10 @@ df_scores.index = ['O{}'.format(i+1) for i in df_scores.index]
 # identify optimization result with the best (= lowest) total score
 best_total_score_value = min(df_scores.loc[:,'total_score'])
 best_total_score_index = df_scores.loc[:,'total_score'].idxmin()
+
+# SCORING OUTPUT
+# export scores data frame as python object
+file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt9d_SlctBestOptAllParams_EvoStrat100x_score_df.pkl"
+open_file = open(file_name, "wb")
+pickle.dump(df_scores, open_file)
+open_file.close()

@@ -54,7 +54,7 @@ all_titers = []
 # loop over all i parameter sets and j optimization results
 for index, param_set in tqdm(param_sets.iterrows()):
     # prepare lists for inner loop results 
-    # (sublists with gram enyme loads and titers for all different optimization results for one parameter set)
+    # (sublists with gram enzyme loads and titers for all different optimization results for one parameter set)
     E_tot_MW_row = []
     titer_row = []
     for opt_result in opt_result_sets:
@@ -98,7 +98,7 @@ for index, param_set in tqdm(param_sets.iterrows()):
     all_E_tot_MW.append(E_tot_MW_row)
     all_titers.append(titer_row)
 
-# OUTPUT
+# CROSS-VALIDATION OUTPUT
 # export all_E_tot_MW as python object
 file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_allEtotMW.pkl"
 open_file = open(file_name, "wb")
@@ -111,7 +111,7 @@ pickle.dump(all_titers, open_file)
 open_file.close()
 # result structure (example for all gram enzyme loads object):
 # outer list: elements are lists of titers [ inner lists: elements are float titers]
-# indexing:  all_E_tot_MW[0]           -> first list of gram enzyme lodas (for all different optimization 
+# indexing:  all_E_tot_MW[0]           -> first list of gram enzyme loads (for all different optimization 
 #                                       results and for one parameter set)
 #            all_E_tot_MW[0][0]        -> first gram enzyme load of the inner list
 
@@ -177,3 +177,10 @@ df_scores.index = ['O{}'.format(i+1) for i in df_scores.index]
 # identify optimization result with the best total score
 best_total_score_value = max(df_scores.loc[:,'total_score'])
 best_total_score_index = df_scores.loc[:,'total_score'].idxmax()
+
+# SCORING OUTPUT
+# export scores data frame as python object
+file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt8bMW_SlctBstOptAllPar_EvoStrat100x_score_df.pkl"
+open_file = open(file_name, "wb")
+pickle.dump(df_scores, open_file)
+open_file.close()

@@ -4,7 +4,7 @@
 """
 Select the best optimization result (prediction) by
 calculating the objective value (here: titer = conc.
-of GDP-Fucose at 24h) for all combinations of 
+of GDP-fucose at 24h) for all combinations of 
 all parameter sets p with all optimization results O.
 
 Model: GDP-Fucose_v7XGSK_with_PE9XGSK_setup.cps
@@ -81,7 +81,7 @@ for index, param_set in tqdm(param_sets.iterrows()):
         set_species('E_PPK3', initial_concentration=curr_opt_set_conc[3])
         # 3) simulate the model
         sim_result = run_time_course()
-        # calculate the objective value (here: titer = GDP-Fucose concentration at 24h)
+        # calculate the objective value (here: titer = GDP-fucose concentration at 24h)
         # 24h is the last time point of the time course simulation
         sim_concs_timepoint_24h = sim_result.iloc[-1]
         titer_24h = sim_concs_timepoint_24h['GDP_Fucose']
@@ -91,7 +91,7 @@ for index, param_set in tqdm(param_sets.iterrows()):
     # append row of titers for all different optimization results and one parameter set to overall result list
     all_titers.append(titers_row)
 
-# OUTPUT
+# CROSS-VALIDATION OUTPUT
 # export all_titers as python object
 file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_SlctBestOptAllParams_EvoStrat_100x_allTit.pkl"
 open_file = open(file_name, "wb")
@@ -120,10 +120,10 @@ df.index = ['p{}'.format(i+1) for i in df.index]
 df_col_stats = df.describe()
 # calculate sum for each column
 df_col_sums= df.sum(axis=0)
-# select colum with the highest median
+# select column with the highest median
 df_col_stats_medians = df_col_stats.loc['50%']
 df_max_col_median_idx = df_col_stats_medians.idxmax()
-# select colum with the highest minimum
+# select column with the highest minimum
 df_col_stats_mins = df_col_stats.loc['min']
 df_max_col_min_idx = df_col_stats_mins.idxmax()
 # select column with highest sum
@@ -163,3 +163,10 @@ df_scores.index = ['O{}'.format(i+1) for i in df_scores.index]
 # identify optimization result with the best total score
 best_total_score_value = max(df_scores.loc[:,'total_score'])
 best_total_score_index = df_scores.loc[:,'total_score'].idxmax()
+
+# SCORING OUTPUT
+# export scores data frame as python object
+file_name = "GDP-Fucose_v7XGSK_PE9XGSK_Opt7b_SlctBestOptAllParams_EvoStrat_100x_score_df.pkl"
+open_file = open(file_name, "wb")
+pickle.dump(df_scores, open_file)
+open_file.close()
