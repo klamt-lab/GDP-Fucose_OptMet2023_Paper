@@ -95,4 +95,4 @@ The optimization is set in the COPASI model file. The *calculation script a* set
 | Visualization output b):  | [GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig](optimization_O6/GDP-Fucose_v7XGSK_PE9XGSK_EvoStrat100x_Opt9d_CostPerProdHeatmap_fig.svg)                     |
 
 ## Publication
-Huber, Alcalá-Orozco, Rexer, Reichl, Klamt (2023), *in revision*
+[Huber, Alcalá-Orozco, Rexer, Reichl, Klamt (2023), Model-based optimization of cell-free enzyme cascades exemplified for the production of GDP-fucose, Metabolic Engineering](https://doi.org/10.1016/j.ymben.2023.10.007)
