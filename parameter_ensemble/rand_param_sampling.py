@@ -119,7 +119,7 @@ for i in trange(100):
     fit_stats_objval = pd.Series(fit_stats['obj'], index=['obj_val'])
     # append the series which contains the objective value to the series of fitted 
     # parameter values (at the end)
-    fit_estim_params = fit_estim_params.append(fit_stats_objval)
+    fit_estim_params = pd.concat([fit_estim_params, fit_stats_objval])
     # append the updated series to the result dataframe by first converting it to
     # a data frame with .to_frame() and by transposing the resulting data frame with
     # .T (to get one long row instead of one column with many rows)
